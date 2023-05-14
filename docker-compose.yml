@@ -1,0 +1,30 @@
+services:
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  backend:
+    build: ./backend
+    ports:
+      - "3001:3001"
+    environment:
+      - URL_DB=mongodb://mongo:27017/todos/
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:4.0-xenial
+    ports:
+      - "27017:27017"
+    volumes:
+      - app:/data/db
+    environment:
+      MONGODB_INITDB_ROOT_USERNAME: appocation
+      MONGODB_INITDB_ROOT_PASSWORD: any_pass
+
+volumes:
+  app:
